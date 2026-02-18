@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="images/hero.png" width="100%" />
-</p>
-
 <h1 align="center">🔴 myinstants-mcp</h1>
 
 <p align="center">
