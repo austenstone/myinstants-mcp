@@ -139,8 +139,15 @@ function downloadToFile(url, filePath) {
 function spawnPlayer(cmd, args) {
   return new Promise(resolve => {
     const child = spawn(cmd, args, { stdio: "ignore", windowsHide: true });
-    child.on("close", (code) => resolve(code === 0));
-    child.on("error", () => resolve(false));
+    activePlayer = child;
+    child.on("close", (code) => {
+      if (activePlayer === child) activePlayer = null;
+      resolve(code === 0);
+    });
+    child.on("error", () => {
+      if (activePlayer === child) activePlayer = null;
+      resolve(false);
+    });
   });
 }
 
@@ -210,6 +217,7 @@ async function streamPlay(url) {
 
 const queue = [];
 let playing = false;
+let activePlayer = null;
 
 function enqueue(url) {
   queue.push(url);
@@ -346,6 +354,35 @@ server.tool(
     if (duration) lines.push(`Duration: ${duration}s`);
     if (!wait && duration) lines.push(`Sound is playing in the background and will finish in ~${duration} seconds.`);
     return { content: [{ type: "text", text: lines.join("\n") }] };
+  }
+);
+
+server.tool(
+  "stop_sound",
+  "Stop the currently playing sound and clear the queue. Use this to interrupt long sounds (rick rolls, etc.).",
+  {},
+  async () => {
+    const wasPlaying = activePlayer !== null;
+    const queueSize = queue.length;
+    
+    if (activePlayer) {
+      try {
+        activePlayer.kill();
+      } catch {}
+      activePlayer = null;
+    }
+    
+    queue.length = 0;
+    
+    if (!wasPlaying && queueSize === 0) {
+      return { content: [{ type: "text", text: "🔇 Nothing is playing" }] };
+    }
+    
+    const parts = [];
+    if (wasPlaying) parts.push("Stopped playback");
+    if (queueSize > 0) parts.push(`cleared ${queueSize} queued sound${queueSize > 1 ? "s" : ""}`);
+    
+    return { content: [{ type: "text", text: `🔇 ${parts.join(" and ")}` }] };
   }
 );
 
