@@ -259,6 +259,52 @@ server.tool(
 );
 
 server.tool(
+  "get_sound_details",
+  "Get details about a specific sound from myinstants.com (views, uploader, category, duration).",
+  {
+    slug: z.string().optional().describe("Sound slug from search results"),
+    query: z.string().optional().describe("Quick search — gets details for first result"),
+  },
+  async ({ slug, query }) => {
+    let targetSlug = slug;
+    let soundUrl;
+    if (query) {
+      const results = await search(query);
+      if (!results.length) return { content: [{ type: "text", text: `No sounds found for "${query}"` }] };
+      targetSlug = results[0].slug;
+      soundUrl = results[0].url;
+    }
+    if (!targetSlug) return { content: [{ type: "text", text: "Provide slug or query." }] };
+
+    const [html, duration] = await Promise.all([
+      httpGet(`${BASE}/en/instant/${encodeURIComponent(targetSlug)}/`),
+      soundUrl ? getMp3Duration(soundUrl) : Promise.resolve(null),
+    ]);
+
+    const desc = html.match(/<meta\s+(?:name|property)=["']description["']\s+content=["']([^"']+)["']/);
+    const views = desc?.[1]?.match(/([\d,]+)\s+views/)?.[1] || null;
+    const uploader = desc?.[1]?.match(/Uploaded by\s+(\S+)/)?.[1]?.replace(/\.$/, "") || null;
+    const cat = html.match(/"name":\s*"([^"]+)",\s*"item":\s*"https:\/\/www\.myinstants\.com\/en\/categories\//)?.[1] || null;
+    const title = html.match(/<meta\s+(?:name|property)=["']og:title["']\s+content=["']([^"']+)["']/)?.[1] || targetSlug;
+    const audioUrl = html.match(/<meta\s+(?:name|property)=["']og:audio["']\s+content=["']([^"']+)["']/)?.[1] || null;
+
+    // If we didn't have the URL from search, try to get duration from og:audio
+    let dur = duration;
+    if (!dur && audioUrl) dur = await getMp3Duration(audioUrl);
+
+    const lines = [`**${title}**`];
+    if (views) lines.push(`Views: ${views}`);
+    if (uploader) lines.push(`Uploader: ${uploader}`);
+    if (cat) lines.push(`Category: ${cat}`);
+    if (dur) lines.push(`Duration: ${dur}s`);
+    if (audioUrl) lines.push(`URL: ${audioUrl}`);
+    lines.push(`Page: ${BASE}/en/instant/${encodeURIComponent(targetSlug)}/`);
+
+    return { content: [{ type: "text", text: lines.join("\n") }] };
+  }
+);
+
+server.tool(
   "play_sound",
   "Play a sound from myinstants.com. Returns the sound duration in seconds so you can plan around async playback.",
   {
