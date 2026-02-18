@@ -1,8 +1,8 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
-  "name": "io.github.austenstone/myinstants-mcp",
+  "name": "io.github.austenstone/myinstants",
   "description": "Give your AI agent a soundboard. Millions of meme sounds from myinstants.com.",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "repository": {
     "url": "https://github.com/austenstone/myinstants-mcp",
     "source": "github",
@@ -12,7 +12,7 @@
     {
       "registryType": "npm",
       "identifier": "myinstants-mcp",
-      "version": "1.8.1",
+      "version": "1.8.2",
       "runtimeHint": "npx",
       "transport": {
         "type": "stdio"
