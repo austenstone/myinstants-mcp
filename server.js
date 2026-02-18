@@ -11,6 +11,7 @@ import { get } from "https";
 
 const volume = Math.min(1, Math.max(0, parseFloat(process.env.MYINSTANTS_VOLUME || "0.5") || 0.5));
 const defaultWait = process.env.MYINSTANTS_WAIT !== undefined ? process.env.MYINSTANTS_WAIT !== "false" : true;
+const enableDetails = process.env.MYINSTANTS_DETAILS === "true";
 const BASE = "https://www.myinstants.com";
 
 function httpGet(url) {
@@ -258,7 +259,7 @@ server.tool(
   }
 );
 
-server.tool(
+if (enableDetails) server.tool(
   "get_sound_details",
   "Get details about a specific sound from myinstants.com (views, uploader, category, duration).",
   {
