@@ -197,8 +197,9 @@ server.tool(
     slug: z.string().optional().describe("Sound slug from search results"),
     url: z.string().optional().describe("Direct MP3 URL"),
     query: z.string().optional().describe("Quick search — plays first result"),
+    wait: z.boolean().optional().default(true).describe("Wait for sound to finish before returning (default: true). Set false for background playback."),
   },
-  async ({ slug, url, query }) => {
+  async ({ slug, url, query, wait }) => {
     let soundUrl = url;
     let name = url?.split("/").pop()?.replace(/\.\w+$/, "") || "";
 
@@ -217,7 +218,11 @@ server.tool(
 
     if (!soundUrl) return { content: [{ type: "text", text: "Provide slug, url, or query." }] };
 
-    enqueue(soundUrl);
+    if (wait) {
+      await streamPlay(soundUrl);
+    } else {
+      enqueue(soundUrl);
+    }
     return { content: [{ type: "text", text: `🔊 ${name}` }] };
   }
 );
