@@ -43,6 +43,24 @@ async function search(query) {
   return parseResults(await httpGet(`${BASE}/en/search/?name=${encodeURIComponent(query)}`));
 }
 
+const CATEGORIES = [
+  "anime & manga", "games", "memes", "movies", "music", "politics",
+  "pranks", "reactions", "sound effects", "sports", "television",
+  "tiktok trends", "viral", "whatsapp audios",
+];
+
+async function category(name) {
+  return parseResults(await httpGet(`${BASE}/en/categories/${encodeURIComponent(name)}/`));
+}
+
+async function recent() {
+  return parseResults(await httpGet(`${BASE}/en/recent/`));
+}
+
+async function bestOfAllTime() {
+  return parseResults(await httpGet(`${BASE}/en/best_of_all_time/`));
+}
+
 function detectPlatform() {
   const p = osPlatform();
   if (p === "darwin") return "mac";
@@ -101,6 +119,16 @@ server.resource("trending", "myinstants://trending", { description: "Trending so
   return { contents: [{ uri: "myinstants://trending", text: results.map(r => `${r.slug}: "${r.name}" → ${r.url}`).join("\n") }] };
 });
 
+server.resource("categories", "myinstants://categories", { description: "Available sound categories", mimeType: "text/plain" }, () => {
+  return { contents: [{ uri: "myinstants://categories", text: CATEGORIES.join("\n") }] };
+});
+
+server.resource("best", "myinstants://best", { description: "Best of all time sounds", mimeType: "text/plain" }, async () => {
+  const results = await bestOfAllTime();
+  if (!results.length) return { contents: [{ uri: "myinstants://best", text: "No results." }] };
+  return { contents: [{ uri: "myinstants://best", text: results.map(r => `${r.slug}: "${r.name}" → ${r.url}`).join("\n") }] };
+});
+
 server.tool(
   "search_sounds",
   "Search myinstants.com for sound buttons.",
@@ -109,6 +137,18 @@ server.tool(
     const results = await search(query);
     if (!results.length) return { content: [{ type: "text", text: `No sounds found for "${query}"` }] };
     return { content: [{ type: "text", text: results.slice(0, 20).map((r, i) => `${i + 1}. ${r.name} → \`${r.slug}\``).join("\n") }] };
+  }
+);
+
+server.tool(
+  "browse_category",
+  "Browse sounds by category on myinstants.com.",
+  { category: z.string().describe(`Category name: ${CATEGORIES.join(", ")}`) },
+  async ({ category: cat }) => {
+    const match = CATEGORIES.find(c => c.toLowerCase() === cat.toLowerCase()) || cat;
+    const results = await category(match);
+    if (!results.length) return { content: [{ type: "text", text: `No sounds in category "${cat}"` }] };
+    return { content: [{ type: "text", text: `**${match}:**\n` + results.slice(0, 20).map((r, i) => `${i + 1}. ${r.name} → \`${r.slug}\``).join("\n") }] };
   }
 );
 
