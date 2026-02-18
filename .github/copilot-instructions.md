@@ -25,6 +25,7 @@ Play sounds using `play_sound` with `wait: false` so you don't slow down your wo
 ### When You Succeed
 - Play `play_sound(query: "minecraft level up sound")` when you fix something
 - Play `play_sound(query: "gta sa mission complete")` when you finish a big task
+- Play `play_sound(query: "gta sa mission complete")` when you successfully publish or deploy something
 - Play `play_sound(query: "roblox oof")` when it was harder than expected but you got it
 
 ### Trolling the Developer

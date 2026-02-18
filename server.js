@@ -69,6 +69,55 @@ function which(cmd) {
   return found;
 }
 
+function httpGetPartial(url, bytes = 4096) {
+  return new Promise((resolve, reject) => {
+    const follow = (u) => get(u, { headers: { "User-Agent": "myinstants-mcp/1.0", "Range": `bytes=0-${bytes - 1}` } }, res => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) return follow(new URL(res.headers.location, u));
+      const chunks = [];
+      res.on("data", c => chunks.push(c));
+      res.on("end", () => {
+        const totalSize = parseInt((res.headers["content-range"] || "").split("/")[1] || res.headers["content-length"] || "0");
+        resolve({ buf: Buffer.concat(chunks), totalSize });
+      });
+    }).on("error", reject);
+    follow(url);
+  });
+}
+
+const MP3_BITRATES_V1L3 = [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320, 0];
+const MP3_BITRATES_V2L3 = [0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160, 0];
+
+function parseMp3Duration(buf, totalSize) {
+  let offset = 0;
+  // Skip ID3v2 tag
+  if (buf.length > 10 && buf[0] === 0x49 && buf[1] === 0x44 && buf[2] === 0x33) {
+    offset = 10 + ((buf[6] << 21) | (buf[7] << 14) | (buf[8] << 7) | buf[9]);
+  }
+  // Find first MP3 sync frame
+  while (offset < buf.length - 4) {
+    if (buf[offset] === 0xFF && (buf[offset + 1] & 0xE0) === 0xE0) {
+      const ver = (buf[offset + 1] >> 3) & 3;
+      const layer = (buf[offset + 1] >> 1) & 3;
+      if (layer !== 1) { offset++; continue; } // Layer III only
+      const brIdx = (buf[offset + 2] >> 4) & 0xF;
+      const bitrate = (ver === 3 ? MP3_BITRATES_V1L3 : MP3_BITRATES_V2L3)[brIdx];
+      if (bitrate > 0 && totalSize > offset) {
+        return Math.round((totalSize - offset) * 8 / (bitrate * 1000) * 10) / 10;
+      }
+    }
+    offset++;
+  }
+  return null;
+}
+
+async function getMp3Duration(url) {
+  try {
+    const { buf, totalSize } = await httpGetPartial(url);
+    if (!totalSize) return null;
+    return parseMp3Duration(buf, totalSize);
+  } catch { return null; }
+}
+
 function downloadToFile(url, filePath) {
   return new Promise((resolve, reject) => {
     const follow = (u) => get(u, { headers: { "User-Agent": "myinstants-mcp/1.0" } }, res => {
@@ -237,12 +286,12 @@ server.tool(
 
     if (!soundUrl) return { content: [{ type: "text", text: "Provide slug, url, or query." }] };
 
-    if (wait) {
-      await streamPlay(soundUrl);
-    } else {
-      enqueue(soundUrl);
-    }
-    return { content: [{ type: "text", text: `🔊 ${name}` }] };
+    const [duration] = await Promise.all([
+      getMp3Duration(soundUrl),
+      wait ? streamPlay(soundUrl) : Promise.resolve(enqueue(soundUrl)),
+    ]);
+    const dur = duration ? ` (${duration}s)` : "";
+    return { content: [{ type: "text", text: `🔊 ${name}${dur}` }] };
   }
 );
 
