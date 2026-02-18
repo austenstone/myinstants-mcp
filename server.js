@@ -324,11 +324,10 @@ server.tool(
       soundUrl = results[0].url;
       name = results[0].name;
     } else if (slug) {
-      const results = await search(slug.replace(/-\d+$/, "").replace(/-/g, " "));
-      const match = results.find(r => r.slug === slug) || results[0];
-      if (!match) return { content: [{ type: "text", text: `Sound "${slug}" not found` }] };
-      soundUrl = match.url;
-      name = match.name;
+      const html = await httpGet(`${BASE}/en/instant/${encodeURIComponent(slug)}/`);
+      soundUrl = html.match(/<meta\s+(?:name|property)=["']og:audio["']\s+content=["']([^"']+)["']/)?.[1] || null;
+      if (!soundUrl) return { content: [{ type: "text", text: `Sound "${slug}" not found` }] };
+      name = (html.match(/<meta\s+(?:name|property)=["']og:title["']\s+content=["']([^"']+)["']/)?.[1] || "").replace(/\s*-\s*Sound Button$/i, "") || slug.replace(/-\d+$/, "").replace(/-/g, " ");
     }
 
     if (!soundUrl) return { content: [{ type: "text", text: "Provide slug, url, or query." }] };
