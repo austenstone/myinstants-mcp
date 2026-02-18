@@ -324,7 +324,7 @@ server.tool(
       soundUrl = results[0].url;
       name = results[0].name;
     } else if (slug) {
-      const results = await search(slug.replace(/-/g, " "));
+      const results = await search(slug.replace(/-\d+$/, "").replace(/-/g, " "));
       const match = results.find(r => r.slug === slug) || results[0];
       if (!match) return { content: [{ type: "text", text: `Sound "${slug}" not found` }] };
       soundUrl = match.url;
