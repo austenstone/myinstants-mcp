@@ -4,9 +4,9 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import { spawn, execSync } from "child_process";
-import { existsSync, mkdirSync, readFileSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, createWriteStream, unlinkSync } from "fs";
 import { join } from "path";
-import { platform as osPlatform } from "os";
+import { platform as osPlatform, tmpdir } from "os";
 import { get } from "https";
 
 const home = process.env.HOME || process.env.USERPROFILE || "";
@@ -72,29 +72,67 @@ function detectPlatform() {
   return null;
 }
 
-function findStreamPlayer() {
-  for (const p of ["ffplay", "mpv"]) {
-    try { execSync(`command -v ${p}`, { stdio: "ignore" }); return p; } catch {}
+function findStreamPlayers() {
+  const players = [];
+  if (osPlatform() === "darwin") {
+    try { execSync("command -v afplay", { stdio: "ignore" }); players.push("afplay"); } catch {}
   }
+  for (const p of ["ffplay", "mpv"]) {
+    try { execSync(`command -v ${p}`, { stdio: "ignore" }); players.push(p); } catch {}
+  }
+  return players;
+}
+
+function getPlayerCommand(player, fileOrUrl) {
+  if (player === "afplay") return ["afplay", ["-v", String(volume), fileOrUrl]];
+  if (player === "ffplay") return ["ffplay", ["-nodisp", "-autoexit", "-volume", String(Math.round(volume * 100)), "-loglevel", "quiet", fileOrUrl]];
+  if (player === "mpv") return ["mpv", ["--no-video", `--volume=${Math.round(volume * 100)}`, fileOrUrl]];
   return null;
 }
 
-function getStreamCommand(url) {
-  const player = findStreamPlayer();
-  if (!player) return null;
-  if (player === "ffplay") return ["ffplay", ["-nodisp", "-autoexit", "-volume", String(Math.round(volume * 100)), "-loglevel", "quiet", url]];
-  if (player === "mpv") return ["mpv", ["--no-video", `--volume=${Math.round(volume * 100)}`, url]];
-  return null;
+function downloadToFile(url, filePath) {
+  return new Promise((resolve, reject) => {
+    const follow = (u) => get(u, { headers: { "User-Agent": "myinstants-mcp/1.0" } }, res => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) return follow(new URL(res.headers.location, u));
+      const stream = createWriteStream(filePath);
+      res.pipe(stream);
+      stream.on("finish", () => resolve());
+      stream.on("error", reject);
+    }).on("error", reject);
+    follow(url);
+  });
 }
 
-function streamPlay(url) {
-  const cmd = getStreamCommand(url);
-  if (!cmd) return Promise.resolve(false);
+function spawnPlayer(cmd) {
   return new Promise(resolve => {
     const child = spawn(cmd[0], cmd[1], { stdio: "ignore" });
-    child.on("close", () => resolve(true));
+    child.on("close", (code) => resolve(code === 0));
     child.on("error", () => resolve(false));
   });
+}
+
+async function streamPlay(url) {
+  const players = findStreamPlayers();
+  for (const player of players) {
+    if (player === "afplay") {
+      const tmp = join(tmpdir(), `myinstants-${Date.now()}.mp3`);
+      try {
+        await downloadToFile(url, tmp);
+        const ok = await spawnPlayer(getPlayerCommand("afplay", tmp));
+        try { unlinkSync(tmp); } catch {}
+        if (ok) return true;
+      } catch {
+        try { unlinkSync(tmp); } catch {}
+      }
+    } else {
+      const cmd = getPlayerCommand(player, url);
+      if (cmd) {
+        const ok = await spawnPlayer(cmd);
+        if (ok) return true;
+      }
+    }
+  }
+  return false;
 }
 
 const queue = [];
