@@ -16,6 +16,7 @@ const UA = `myinstants-mcp/${pkg.version}`;
 const volume = Math.min(1, Math.max(0, parseFloat(process.env.MYINSTANTS_VOLUME || "0.5") || 0.5));
 const defaultWait = process.env.MYINSTANTS_WAIT === "true";
 const enableDetails = process.env.MYINSTANTS_DETAILS === "true";
+const enableCache = process.env.MYINSTANTS_CACHE !== "false";
 const BASE = "https://www.myinstants.com";
 
 const home = process.env.HOME || process.env.USERPROFILE || "";
@@ -24,14 +25,16 @@ const cachePath = join(cacheDir, "cache.json");
 const SEARCH_TTL = 24 * 60 * 60 * 1000;
 const MAX_RECENT = 50;
 
-if (!existsSync(cacheDir)) mkdirSync(cacheDir, { recursive: true });
+if (enableCache && !existsSync(cacheDir)) mkdirSync(cacheDir, { recursive: true });
 
 function loadCache() {
+  if (!enableCache) return { sounds: {}, searches: {}, recent: [], favorites: [] };
   try { return JSON.parse(readFileSync(cachePath, "utf-8")); }
   catch { return { sounds: {}, searches: {}, recent: [], favorites: [] }; }
 }
 
 function saveCache(cache) {
+  if (!enableCache) return;
   writeFileSync(cachePath, JSON.stringify(cache, null, 2));
 }
 
