@@ -24,6 +24,13 @@
   <a href="https://aka.ms/awesome-copilot/install/instructions?url=vscode-insiders%3Achat-instructions%2Finstall%3Furl%3Dhttps%3A%2F%2Fraw.githubusercontent.com%2Faustenstone%2Fmyinstants-mcp%2Fmain%2F.github%2Finstructions%2Fmyinstants.instructions.md">
     <img src="https://img.shields.io/badge/VS_Code_Insiders-Install_Instructions-24bfa5?style=for-the-badge&logo=visualstudiocode&logoColor=white" alt="Install in VS Code Insiders" />
   </a>
+  <br/>
+  <a href="https://vscode1click.io/?repo=austenstone/myinstants-mcp&type=mcp">
+    <img src="https://img.shields.io/badge/VS_Code-Install_MCP_Server-0098FF?style=for-the-badge&logo=visualstudiocode&logoColor=white" alt="Install MCP Server in VS Code" />
+  </a>
+  <a href="https://vscode1click.io/?repo=austenstone/myinstants-mcp&type=mcp&insiders=true">
+    <img src="https://img.shields.io/badge/VS_Code_Insiders-Install_MCP_Server-24bfa5?style=for-the-badge&logo=visualstudiocode&logoColor=white" alt="Install MCP Server in VS Code Insiders" />
+  </a>
 </p>
 
 ---
