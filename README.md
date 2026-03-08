@@ -11,6 +11,16 @@
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="license" /></a>
 </p>
 
+<p align="center">
+  <strong>1-Click Install:</strong><br/>
+  <a href="vscode://mcp/add?mcp=io.github.austenstone/myinstants">
+    <img src="https://img.shields.io/badge/🔴_Install_MCP_Server-red?style=for-the-badge" alt="Install MCP Server" />
+  </a>
+  <a href="https://insiders.vscode.dev/+austenstone.myinstants-mcp/blob/main/.instructions.md">
+    <img src="https://img.shields.io/badge/🎯_Install_Copilot_Instructions-orange?style=for-the-badge" alt="Install Copilot Instructions" />
+  </a>
+</p>
+
 ---
 
 <img src="images/robot.png" width="100%" />
@@ -135,10 +145,14 @@ sounds queue up automatically. no overlap. your agent can fire multiple sounds a
 
 ## teach your agent to troll you 💀
 
-drop a `.github/copilot-instructions.md` in your repo and your agent will play sounds **while it works**. imagine: vine boom when it finds a bug. sad trombone when your tests fail. rick roll mid-code-review for absolutely no reason.
+drop a `.instructions.md` in your repo (with `applyTo: "**"` in the frontmatter) and your agent will play sounds **while it works**. imagine: vine boom when it finds a bug. sad trombone when your tests fail. rick roll mid-code-review for absolutely no reason.
 
 ```markdown
-# in your .github/copilot-instructions.md
+---
+name: "Soundboard"
+description: "Sounds for all contexts"
+applyTo: "**"
+---
 
 Play sounds using the myinstants MCP server while you work:
 - Play `play_sound(query: "vine boom sound")` when you find cursed code
@@ -146,7 +160,7 @@ Play sounds using the myinstants MCP server while you work:
 - Play `play_sound(query: "minecraft level up sound")` when you fix something
 ```
 
-check our [copilot-instructions.md](.github/copilot-instructions.md) for the full unhinged setup. your agent will never be an NPC again. 🏆
+check our [.instructions.md](.instructions.md) for the full unhinged setup. your agent will never be an NPC again. 🏆
 
 ## config
 
