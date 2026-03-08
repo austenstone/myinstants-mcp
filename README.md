@@ -8,7 +8,7 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/myinstants-mcp"><img src="https://img.shields.io/npm/v/myinstants-mcp?style=flat-square&color=red" alt="npm version" /></a>
   <a href="https://www.npmjs.com/package/myinstants-mcp"><img src="https://img.shields.io/npm/dm/myinstants-mcp?style=flat-square&color=orange" alt="npm downloads" /></a>
-  <a href="https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.austenstone/myinstants"><img src="https://img.shields.io/badge/MCP_Registry-published-green?style=flat-square" alt="MCP Registry" /></a>
+  <a href="https://registry.modelcontextprotocol.io/?q=io.github.austenstone%2Fmyinstants"><img src="https://img.shields.io/badge/MCP_Registry-published-green?style=flat-square" alt="MCP Registry" /></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="license" /></a>
 </p>
 
