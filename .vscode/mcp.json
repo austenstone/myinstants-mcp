@@ -1,0 +1,13 @@
+{
+	"servers": {
+		"myinstants": {
+			"command": "npx",
+			"args": [
+				"-y",
+				"myinstants-mcp@latest"
+			],
+			"type": "stdio"
+		}
+	},
+	"inputs": []
+}

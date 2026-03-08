@@ -14,18 +14,18 @@
 
 <p align="center">
   <strong>Quick Start:</strong><br/>
-  <a href="https://aka.ms/awesome-copilot/install/instructions?url=vscode%3Achat-instructions%2Finstall%3Furl%3Dhttps%3A%2F%2Fraw.githubusercontent.com%2Faustenstone%2Fmyinstants-mcp%2Fmain%2F.github%2Finstructions%2Fmyinstants.instructions.md">
-    <img src="https://img.shields.io/badge/VS_Code-Install_Instructions-0098FF?style=for-the-badge&logo=visualstudiocode&logoColor=white" alt="Install in VS Code" />
-  </a>
-  <a href="https://aka.ms/awesome-copilot/install/instructions?url=vscode-insiders%3Achat-instructions%2Finstall%3Furl%3Dhttps%3A%2F%2Fraw.githubusercontent.com%2Faustenstone%2Fmyinstants-mcp%2Fmain%2F.github%2Finstructions%2Fmyinstants.instructions.md">
-    <img src="https://img.shields.io/badge/VS_Code_Insiders-Install_Instructions-24bfa5?style=for-the-badge&logo=visualstudiocode&logoColor=white" alt="Install in VS Code Insiders" />
-  </a>
-  <br/>
   <a href="https://vscode.dev/redirect?url=vscode%3Amcp%2Finstall%3F%7B%22name%22%3A%22myinstants%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22myinstants-mcp%40latest%22%5D%7D">
     <img src="https://img.shields.io/badge/VS_Code-Install_MCP_Server-0098FF?style=for-the-badge&logo=visualstudiocode&logoColor=white" alt="Install MCP Server in VS Code" />
   </a>
   <a href="https://insiders.vscode.dev/redirect?url=vscode-insiders%3Amcp%2Finstall%3F%7B%22name%22%3A%22myinstants%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22myinstants-mcp%40latest%22%5D%7D">
     <img src="https://img.shields.io/badge/VS_Code_Insiders-Install_MCP_Server-24bfa5?style=for-the-badge&logo=visualstudiocode&logoColor=white" alt="Install MCP Server in VS Code Insiders" />
+  </a>
+  <br/>
+  <a href="https://aka.ms/awesome-copilot/install/instructions?url=vscode%3Achat-instructions%2Finstall%3Furl%3Dhttps%3A%2F%2Fraw.githubusercontent.com%2Faustenstone%2Fmyinstants-mcp%2Fmain%2F.github%2Finstructions%2Fmyinstants.instructions.md">
+    <img src="https://img.shields.io/badge/VS_Code-Install_Instructions-0098FF?style=for-the-badge&logo=visualstudiocode&logoColor=white" alt="Install in VS Code" />
+  </a>
+  <a href="https://aka.ms/awesome-copilot/install/instructions?url=vscode-insiders%3Achat-instructions%2Finstall%3Furl%3Dhttps%3A%2F%2Fraw.githubusercontent.com%2Faustenstone%2Fmyinstants-mcp%2Fmain%2F.github%2Finstructions%2Fmyinstants.instructions.md">
+    <img src="https://img.shields.io/badge/VS_Code_Insiders-Install_Instructions-24bfa5?style=for-the-badge&logo=visualstudiocode&logoColor=white" alt="Install in VS Code Insiders" />
   </a>
 </p>
 
