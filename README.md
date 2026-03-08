@@ -8,6 +8,7 @@
 <p align="center">
   <a href="https://www.npmjs.com/package/myinstants-mcp"><img src="https://img.shields.io/npm/v/myinstants-mcp?style=flat-square&color=red" alt="npm version" /></a>
   <a href="https://www.npmjs.com/package/myinstants-mcp"><img src="https://img.shields.io/npm/dm/myinstants-mcp?style=flat-square&color=orange" alt="npm downloads" /></a>
+  <a href="https://registry.modelcontextprotocol.io/v0.1/servers?search=io.github.austenstone/myinstants"><img src="https://img.shields.io/badge/MCP_Registry-published-green?style=flat-square" alt="MCP Registry" /></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-blue?style=flat-square" alt="license" /></a>
 </p>
 
@@ -16,7 +17,7 @@
   <a href="vscode://mcp/add?mcp=io.github.austenstone/myinstants">
     <img src="https://img.shields.io/badge/🔴_Install_MCP_Server-red?style=for-the-badge" alt="Install MCP Server" />
   </a>
-  <a href="https://insiders.vscode.dev/+austenstone.myinstants-mcp/blob/main/.instructions.md">
+  <a href="https://insiders.vscode.dev/+austenstone.myinstants-mcp/blob/main/.github/instructions/myinstants.instructions.md">
     <img src="https://img.shields.io/badge/🎯_Install_Copilot_Instructions-orange?style=for-the-badge" alt="Install Copilot Instructions" />
   </a>
 </p>
@@ -160,7 +161,7 @@ Play sounds using the myinstants MCP server while you work:
 - Play `play_sound(query: "minecraft level up sound")` when you fix something
 ```
 
-check our [.instructions.md](.instructions.md) for the full unhinged setup. your agent will never be an NPC again. 🏆
+check our [myinstants.instructions.md](.github/instructions/myinstants.instructions.md) for the full unhinged setup. your agent will never be an NPC again. 🏆
 
 ## config
 
