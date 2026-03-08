@@ -18,10 +18,10 @@
     <img src="https://img.shields.io/badge/🔴_Install_MCP_Server-red?style=for-the-badge" alt="Install MCP Server" />
   </a>
   <br />
-  <a href="https://aka.ms/awesome-copilot/install/agent?url=vscode%3Achat-agent%2Finstall%3Furl%3Dhttps%3A%2F%2Fraw.githubusercontent.com%2Faustenstone%2Fmyinstants-mcp%2Fmain%2F.instructions.md">
+  <a href="https://aka.ms/awesome-copilot/install/agent?url=vscode%3Achat-agent%2Finstall%3Furl%3Dhttps%3A%2F%2Fraw.githubusercontent.com%2Faustenstone%2Fmyinstants-mcp%2Fmain%2F.github%2Finstructions%2Fmyinstants.instructions.md">
     <img src="https://img.shields.io/badge/VS_Code-Install_Instructions-0098FF?style=for-the-badge&logo=visualstudiocode&logoColor=white" alt="Install in VS Code" />
   </a>
-  <a href="https://aka.ms/awesome-copilot/install/agent?url=vscode-insiders%3Achat-agent%2Finstall%3Furl%3Dhttps%3A%2F%2Fraw.githubusercontent.com%2Faustenstone%2Fmyinstants-mcp%2Fmain%2F.instructions.md">
+  <a href="https://aka.ms/awesome-copilot/install/agent?url=vscode-insiders%3Achat-agent%2Finstall%3Furl%3Dhttps%3A%2F%2Fraw.githubusercontent.com%2Faustenstone%2Fmyinstants-mcp%2Fmain%2F.github%2Finstructions%2Fmyinstants.instructions.md">
     <img src="https://img.shields.io/badge/VS_Code_Insiders-Install_Instructions-24bfa5?style=for-the-badge&logo=visualstudiocode&logoColor=white" alt="Install in VS Code Insiders" />
   </a>
 </p>
