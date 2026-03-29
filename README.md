@@ -270,3 +270,8 @@ made by [@austenstone](https://github.com/austenstone) 🏷️
 powered by [myinstants.com](https://www.myinstants.com) · built with [MCP](https://modelcontextprotocol.io)
 
 no cap this might be the most unhinged MCP server ever and we're lowkey proud of it 💀🔥
+
+## Hosted deployment
+
+A hosted deployment is available on [Fronteir AI](https://fronteir.ai/mcp/austenstone-myinstants-mcp).
+
